@@ -3,4 +3,5 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return '<h1>Hello, my best frined!</h1>'
+    print(f'This is {3}')
+    return '<h1 style="text-align:center"> Hello, my best frined! <br/> How is the day? </h1>'
