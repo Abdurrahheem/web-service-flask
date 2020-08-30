@@ -2,6 +2,8 @@ version: "3.8"
 services:
   flask:
     build: .
-    command: flask run
+    command: flask run --host 0.0.0.0
     environment:
         - FLASK_APP=hello.py
+    ports:
+        - "5000:5000"
