@@ -4,6 +4,7 @@ from flask import Flask
 from markupsafe import escape
 
 app = Flask(__name__)
+knn = load('irismodel.joblib') 
 
 @app.route('/')
 def hello_world():
@@ -27,7 +28,6 @@ def avg(array):
 def iris(data):
     data = data.split(',')
     data = [float(s) for s in data]
-    knn = load('irismodel.joblib') 
     result = str(knn.predict(np.array(data).reshape(1,-1)).item(0))
 
     return '<h2>Your Iris flawer is {}</h2>'.format(result)
