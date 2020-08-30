@@ -1,8 +1,7 @@
 import numpy as np
-from sklearn import datasets
+from joblib import dump, load
 from flask import Flask
 from markupsafe import escape
-from sklearn.neighbors import KNeighborsClassifier
 
 app = Flask(__name__)
 
@@ -28,17 +27,7 @@ def avg(array):
 def iris(data):
     data = data.split(',')
     data = [float(s) for s in data]
-    np.random.seed(0)
-    iris_X, iris_y = datasets.load_iris(return_X_y=True)
-    indices = np.random.permutation(len(iris_X))
-    iris_X_train = iris_X[indices[:-10]]
-    iris_y_train = iris_y[indices[:-10]]
-    iris_X_test = iris_X[indices[-10:]]
-    iris_y_test = iris_y[indices[-10:]]
-
-    # Create and fit a nearest-neighbor classifier
-    knn = KNeighborsClassifier()
-    knn.fit(iris_X_train, iris_y_train)
+    knn = load('irismodel.joblib') 
     result = str(knn.predict(np.array(data).reshape(1,-1)).item(0))
 
     return '<h2>Your Iris flawer is {}</h2>'.format(result)
