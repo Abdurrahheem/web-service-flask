@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+  flask:
+    build: .
+    command: flask run
+    environment:
+        - FLASK_APP=hello.py
