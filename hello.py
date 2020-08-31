@@ -1,12 +1,21 @@
 import numpy as np
+import os
 from joblib import dump, load
 from flask import Flask, request, jsonify, render_template, abort, redirect, url_for
 from markupsafe import escape
+from flask_wtf import FlaskForm
+from wtforms import StringField
+from werkzeug.utils import secure_filename
+from wtforms.validators import DataRequired
+from flask_wtf.file import FileField
 
 app = Flask(__name__)
 knn = load('irismodel.joblib') 
 
-
+app.config.update(dict(
+    SECRET_KEY="powerful secretkey",
+    WTF_CSRF_SECRET_KEY="a csrf secret key"
+))
 
 def predict(data):
     """ Predicts type of iris flower
@@ -69,3 +78,19 @@ def iris_post():
         return redirect(url_for('bad_request'))
     return jsonify(rlt)
 
+class MyForm(FlaskForm):
+    name = StringField('name', validators=[DataRequired()])
+    file = FileField()
+
+@app.route('/submit', methods=('GET', 'POST'))
+def submit():
+    form = MyForm()
+    if form.validate_on_submit():
+        print(form.name.data)
+        f = form.file.data
+        filename = form.name.data + '.txt'
+        f.save(os.path.join(
+          filename
+        ))
+        return(str(form.name.data))
+    return render_template('submit.html', form=form)
