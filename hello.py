@@ -2,7 +2,7 @@ import numpy as np
 import os
 import pandas as pd
 from joblib import dump, load
-from flask import Flask, request, jsonify, render_template, abort, redirect, url_for
+from flask import Flask, request, jsonify, render_template, abort, redirect, url_for, send_file
 from markupsafe import escape
 from flask_wtf import FlaskForm
 from wtforms import StringField
@@ -95,5 +95,9 @@ def submit():
         # ))
         upfile = pd.read_csv(f, header=None)
         pd.DataFrame(knn.predict(upfile)).to_csv(filename,index=False)
-        return('<h1> File Uploaded </h1>')
+        return send_file(filename,
+                        mimetype='text/csv',
+                        attachment_filename=filename,
+                        as_attachment=True)
+        # return('<h1> File Uploaded </h1>')
     return render_template('submit.html', form=form)
