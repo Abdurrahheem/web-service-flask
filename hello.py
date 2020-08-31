@@ -29,5 +29,9 @@ def iris(data):
     data = data.split(',')
     data = [float(s) for s in data]
     result = str(knn.predict(np.array(data).reshape(1,-1)).item(0))
-
     return '<h2>Your Iris flawer is {}</h2>'.format(result)
+
+@app.route('/show_im')
+def show_im():
+    # return "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Kosaciec_szczecinkowaty_Iris_setosa.jpg/440px-Kosaciec_szczecinkowaty_Iris_setosa.jpg', alt='Flowers in Chania'>"
+    return '<img src="/static/setosa.jpg" alt="setosa">'
