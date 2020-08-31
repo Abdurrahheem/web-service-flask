@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import pandas as pd
 from joblib import dump, load
 from flask import Flask, request, jsonify, render_template, abort, redirect, url_for
 from markupsafe import escape
@@ -88,9 +89,11 @@ def submit():
     if form.validate_on_submit():
         print(form.name.data)
         f = form.file.data
-        filename = form.name.data + '.txt'
-        f.save(os.path.join(
-          filename
-        ))
-        return(str(form.name.data))
+        filename = form.name.data + '.csv'
+        # f.save(os.path.join(
+        #   filename
+        # ))
+        upfile = pd.read_csv(f, header=None)
+        pd.DataFrame(knn.predict(upfile)).to_csv(filename,index=False)
+        return('<h1> File Uploaded </h1>')
     return render_template('submit.html', form=form)
